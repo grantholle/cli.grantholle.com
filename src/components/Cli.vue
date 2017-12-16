@@ -1,0 +1,180 @@
+<template>
+  <div class="cli" @keydown="handleInput" @click="handleClick">
+    <input type="text" v-model="userInput" @blur="blur" autofocus>
+
+    <div>&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___</div>
+    <div>/\&nbsp;\&nbsp;&nbsp;__/\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/\_&nbsp;\</div>
+    <div>\&nbsp;\&nbsp;\/\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__\//\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__</div>
+    <div>&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;/'__`\\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;/'___\&nbsp;/&nbsp;__`\&nbsp;/'&nbsp;__`&nbsp;__`\&nbsp;&nbsp;/'__`\</div>
+    <div>&nbsp;&nbsp;\&nbsp;\&nbsp;\_/&nbsp;\_\&nbsp;\/\&nbsp;&nbsp;__/&nbsp;\_\&nbsp;\_/\&nbsp;\__//\&nbsp;\L\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;&nbsp;__/</div>
+    <div>&nbsp;&nbsp;&nbsp;\&nbsp;`\___x___/\&nbsp;\____\/\____\&nbsp;\____\&nbsp;\____/\&nbsp;\_\&nbsp;\_\&nbsp;\_\&nbsp;\____\</div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;'\/__//__/&nbsp;&nbsp;\/____/\/____/\/____/\/___/&nbsp;&nbsp;\/_/\/_/\/_/\/____/</div>
+    <div>&nbsp;</div>
+    <div>Welcome&nbsp;to&nbsp;GrantOS&nbsp;1.0.0&nbsp;LTS&nbsp;({{ userAgent }})</div>
+    <div>&nbsp;</div>
+    <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/grantholle</div>
+    <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;https://twitter.com/grantholle_</div>
+    <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.npmjs.com/~grantholle</div>
+    <div>&nbsp;</div>
+    <div>0&nbsp;packages&nbsp;can&nbsp;be&nbsp;updated.</div>
+    <div>0&nbsp;updates&nbsp;are&nbsp;security&nbsp;updates.</div>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    <div>***&nbsp;System&nbsp;restart&nbsp;required&nbsp;***</div>
+    <div v-for="(line, index) in lineFeed" :key="index">
+      <span v-if="line.hasPrompt" class="user-prompt">{{ userPrompt }}</span>
+      {{ line.text }}
+    </div>
+
+    <div v-if="allowInput" class="user-input">
+      <span class="user-prompt" :class="{ 'add-buffer': !userInput }">{{ userPrompt }}</span>
+      <span>{{ userInput }}</span>
+      <span class="cursor" :class="{ blink: !typing }">&nbsp;</span>
+    </div>
+  </div>
+</template>
+
+<script>
+import moment from 'moment'
+import axios from 'axios'
+
+export default {
+  name: 'Cli',
+  created () {
+    this.getIp()
+  },
+  data () {
+    return {
+      ip: '',
+      userInput: '',
+      userPrompt: 'root@grantholle.com:$',
+      lineFeed: [],
+      typing: false,
+      userAgent: window.navigator.userAgent,
+      allowInput: false,
+      commands: [
+        'reboot'
+      ]
+    }
+  },
+  methods: {
+    async getIp () {
+      const { data } = await axios.get(`https://api.ipify.org?format=json`)
+
+      this.lineFeed.push({
+        text: `Current Login: ${moment().format('ddd MMM DD HH:mm:ss YYYY')} from ${data.ip}`
+      })
+
+      setTimeout(() => this.allowInput = true, 750)
+    },
+    handleInput (event) {
+      console.log(event.key)
+      if (!this.typing) {
+        this.typing = true
+      }
+
+      switch (event.key) {
+        case 'Tab':
+          event.preventDefault()
+
+          const command = this.commands.find(c => c.match(new RegExp(`^${this.userInput}`, 'i')))
+
+          if (command) {
+            this.userInput = command + ' '
+          }
+
+          this.resume()
+          break
+        case 'Enter':
+          this.lineFeed.push({
+            hasPrompt: true,
+            text: this.userInput
+          })
+
+          this.userInput = ''
+          window.scrollTo(0, document.body.scrollHeight)
+        default:
+          this.resume()
+      }
+      // Tab should be autocomplete
+      // if (event.key === 'Tab') {
+      //   return event.preventDefault()
+      // }
+      // string'd input
+      // character array input?
+      // command history -- handle with errors
+      // console.log(event.key)
+
+    },
+    handleClick (event) {
+      this.$el.children[0].focus()
+    },
+    blur (event) {
+      event.target.focus()
+    },
+    resume () {
+      setTimeout(() => this.typing = false, 150)
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+$white: #f9f9f9;
+$black: #002833;
+
+@keyframes blink {
+  from, to {
+    background: white;
+  }
+  50% {
+    background: transparent;
+  }
+}
+
+body {
+  background: $black;
+  color: $white;
+  padding: 8px 10px;
+}
+
+.cli {
+  width: 100%;
+  font-family: 'Inconsolata', monospace;
+  position: relative;
+
+  div {
+    line-height: 1.3em;
+  }
+}
+
+.cursor {
+  background: $white;
+  display: inline-block;
+  position: relative;
+  left: -6px;
+
+  &.blink {
+    animation: 1s blink step-end infinite;
+  }
+}
+
+input {
+  position: absolute;
+  bottom: 0;
+  color: transparent;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.user-prompt {
+  color: #93a1a1
+}
+
+.add-buffer {
+  display: inline-block;
+  margin-right: 6px;
+}
+</style>
