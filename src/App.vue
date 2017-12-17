@@ -15,6 +15,11 @@ export default {
   box-sizing: border-box;
 }
 
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @font-face {
   font-family: 'Inconsolata';
   font-style: normal;
