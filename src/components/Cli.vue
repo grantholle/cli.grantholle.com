@@ -65,6 +65,10 @@ export default {
       allowInput: false,
       commands: [
         'reboot'
+      ],
+      commandHistoryIndex: 1,
+      commandHistory: [
+        'help'
       ]
     }
   },
@@ -104,8 +108,23 @@ export default {
 
           this.userInput = ''
           window.scrollTo(0, document.body.scrollHeight)
+          break
+        case ' ':
+          this.cursorOffset += 8
+          this.resume()
+          break
+        case 'Shift':
+        case 'Backspace':
+        case 'Control':
+        case 'Alt':
+        case 'Meta':
+          this.resume()
+          break
         case 'ArrowLeft':
-          this.cursorOffset += -8
+          if (this.cursorOffset > this.userInput.length * -8 - 8) {
+            this.cursorOffset += -8
+          }
+
           this.resume()
           break
         case 'ArrowRight':
@@ -115,18 +134,21 @@ export default {
 
           this.resume()
           break
+        case 'ArrowUp':
+          const index = this.commandHistoryIndex > 0 ? --this.commandHistoryIndex : 0
+
+          this.userInput = this.commandHistory[index]
+          this.resume()
+          break
+        case 'ArrowDown':
+          this.userInput = this.commandHistoryIndex < this.commandHistory.length ? this.commandHistory[++this.commandHistoryIndex] : ''
+          this.resume()
+          break
         default:
           this.resume()
+          this.cursorOffset = this.cursorOffset < -8 ? this.cursorOffset : -8
+          break
       }
-      // Tab should be autocomplete
-      // if (event.key === 'Tab') {
-      //   return event.preventDefault()
-      // }
-      // string'd input
-      // character array input?
-      // command history -- handle with errors
-      // console.log(event.key)
-
     },
     handleClick (event) {
       this.$el.children[0].focus()
@@ -177,6 +199,7 @@ body {
     background: transparent;
     border: none;
     outline: none;
+    user-select: none;
   }
 
   a {
