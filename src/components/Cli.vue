@@ -12,9 +12,10 @@
     <div>&nbsp;</div>
     <div>Welcome&nbsp;to&nbsp;GrantOS&nbsp;1.0.0&nbsp;LTS&nbsp;({{ userAgent }})</div>
     <div>&nbsp;</div>
-    <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/grantholle</div>
-    <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;https://twitter.com/grantholle_</div>
-    <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.npmjs.com/~grantholle</div>
+    <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.gh">{{ links.gh }}</a></div>
+    <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.twitter">{{ links.twitter }}</a></div>
+    <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.npm">{{ links.npm }}</a></div>
+    <div>&nbsp;*&nbsp;Stackoverflow:&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.so">{{ links.so }}</a></div>
     <div>&nbsp;</div>
     <div>0&nbsp;packages&nbsp;can&nbsp;be&nbsp;updated.</div>
     <div>0&nbsp;updates&nbsp;are&nbsp;security&nbsp;updates.</div>
@@ -46,6 +47,12 @@ export default {
   data () {
     return {
       ip: '',
+      links: {
+        so: 'https://stackoverflow.com/users/1696102/grant',
+        npm: 'https://www.npmjs.com/~grantholle',
+        gh: 'https://github.com/grantholle',
+        twitter: 'https://twitter.com/grantholle_'
+      },
       userInput: '',
       userPrompt: 'root@grantholle.com:$',
       lineFeed: [],
@@ -147,6 +154,24 @@ body {
   div {
     line-height: 1.3em;
   }
+
+  input {
+    position: absolute;
+    bottom: 0;
+    color: transparent;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+
+  a {
+    color: $white;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .cursor {
@@ -158,15 +183,6 @@ body {
   &.blink {
     animation: 1s blink step-end infinite;
   }
-}
-
-input {
-  position: absolute;
-  bottom: 0;
-  color: transparent;
-  background: transparent;
-  border: none;
-  outline: none;
 }
 
 .user-prompt {
