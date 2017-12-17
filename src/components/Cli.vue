@@ -1,6 +1,6 @@
 <template>
   <div class="cli" @keydown="handleInput" @click="handleClick">
-    <input type="text" v-model="userInput" @blur="blur" autofocus>
+    <input type="text" v-model="userInput" @blur="blur" autofocus spellcheck="false">
 
     <div>&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___</div>
     <div>/\&nbsp;\&nbsp;&nbsp;__/\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/\_&nbsp;\</div>
