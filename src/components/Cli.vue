@@ -30,7 +30,7 @@
     <div v-if="allowInput" class="user-input">
       <span class="user-prompt" :class="{ 'add-buffer': !userInput }">{{ userPrompt }}</span>
       <span>{{ userInput }}</span>
-      <span class="cursor" :class="{ blink: !typing }">&nbsp;</span>
+      <span class="cursor" :class="{ blink: !typing }" :style="{ left: `${cursorOffset}px` }">&nbsp;</span>
     </div>
   </div>
 </template>
@@ -57,6 +57,7 @@ export default {
       userPrompt: 'root@grantholle.com:$',
       lineFeed: [],
       typing: false,
+      cursorOffset: -8,
       userAgent: window.navigator.userAgent,
       allowInput: false,
       commands: [
@@ -100,6 +101,17 @@ export default {
 
           this.userInput = ''
           window.scrollTo(0, document.body.scrollHeight)
+        case 'ArrowLeft':
+          this.cursorOffset += -8
+          this.resume()
+          break
+        case 'ArrowRight':
+          if (this.cursorOffset < -8) {
+            this.cursorOffset += 8
+          }
+
+          this.resume()
+          break
         default:
           this.resume()
       }
@@ -178,7 +190,8 @@ body {
   background: $white;
   display: inline-block;
   position: relative;
-  left: -6px;
+  // left: -8px;
+  // width: 8px;
 
   &.blink {
     animation: 1s blink step-end infinite;
