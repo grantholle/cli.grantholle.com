@@ -106,8 +106,8 @@ export default {
             text: this.userInput
           })
 
-          this.userInput = ''
-          window.scrollTo(0, document.body.scrollHeight)
+          this.scroll()
+          this.runCommand()
           break
         case ' ':
           this.cursorOffset += 8
@@ -149,6 +149,21 @@ export default {
           this.cursorOffset = this.cursorOffset < -8 ? this.cursorOffset : -8
           break
       }
+    },
+    runCommand () {
+      const parts = this.userInput.split(' ')
+      const command = parts[0] === 'sudo' ? parts[1] : parts[0]
+      this.userInput = ''
+
+      if (this.commands.indexOf(command) === -1) {
+        this.lineFeed.push({
+          text: `${command}: command not found`
+        })
+        return this.scroll()
+      }
+    },
+    scroll () {
+      window.scrollTo(0, document.body.scrollHeight)
     },
     handleClick (event) {
       this.$el.children[0].focus()
