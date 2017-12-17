@@ -44,6 +44,9 @@ export default {
   created () {
     this.getIp()
   },
+  ready () {
+    this.$el.children[0].focus()
+  },
   data () {
     return {
       ip: '',
