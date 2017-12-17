@@ -64,7 +64,9 @@ export default {
       userAgent: window.navigator.userAgent,
       allowInput: false,
       commands: [
-        'reboot'
+        'help',
+        'reboot',
+        'hello'
       ],
       commandHistoryIndex: 1,
       commandHistory: [
@@ -153,6 +155,8 @@ export default {
     runCommand () {
       const parts = this.userInput.split(' ')
       const command = parts[0] === 'sudo' ? parts[1] : parts[0]
+      this.commandHistory.push(this.userInput)
+      this.commandHistoryIndex = this.commandHistory.length
       this.userInput = ''
 
       if (this.commands.indexOf(command) === -1) {
@@ -161,6 +165,8 @@ export default {
         })
         return this.scroll()
       }
+
+      this[command]()
     },
     scroll () {
       window.scrollTo(0, document.body.scrollHeight)
@@ -173,6 +179,12 @@ export default {
     },
     resume () {
       setTimeout(() => this.typing = false, 150)
+    },
+    // All the command functions
+    hello () {
+      this.lineFeed.push({
+        text: `你好！`
+      })
     }
   }
 }
