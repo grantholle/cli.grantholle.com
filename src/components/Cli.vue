@@ -87,7 +87,7 @@ export default {
         twitter: 'https://twitter.com/grantholle_'
       },
       userInput: '',
-      userPrompt: 'root@grantholle.com:$',
+      userPrompt: 'guest@grantholle.com:$',
       lineFeed: [],
       preLineFeed: '',
       typing: false,
