@@ -2,26 +2,51 @@
   <div class="cli" @keydown="handleInput" @click="handleClick">
     <input type="text" v-model="userInput" @blur="blur" autofocus spellcheck="false">
 
-    <div>&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___</div>
-    <div>/\&nbsp;\&nbsp;&nbsp;__/\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/\_&nbsp;\</div>
-    <div>\&nbsp;\&nbsp;\/\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__\//\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__</div>
-    <div>&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;/'__`\\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;/'___\&nbsp;/&nbsp;__`\&nbsp;/'&nbsp;__`&nbsp;__`\&nbsp;&nbsp;/'__`\</div>
-    <div>&nbsp;&nbsp;\&nbsp;\&nbsp;\_/&nbsp;\_\&nbsp;\/\&nbsp;&nbsp;__/&nbsp;\_\&nbsp;\_/\&nbsp;\__//\&nbsp;\L\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;&nbsp;__/</div>
-    <div>&nbsp;&nbsp;&nbsp;\&nbsp;`\___x___/\&nbsp;\____\/\____\&nbsp;\____\&nbsp;\____/\&nbsp;\_\&nbsp;\_\&nbsp;\_\&nbsp;\____\</div>
-    <div>&nbsp;&nbsp;&nbsp;&nbsp;'\/__//__/&nbsp;&nbsp;\/____/\/____/\/____/\/___/&nbsp;&nbsp;\/_/\/_/\/_/\/____/</div>
-    <div>&nbsp;</div>
-    <div>Welcome&nbsp;to&nbsp;GrantOS&nbsp;1.0.0&nbsp;LTS&nbsp;({{ userAgent }})</div>
-    <div>&nbsp;</div>
-    <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.gh">{{ links.gh }}</a></div>
-    <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.twitter">{{ links.twitter }}</a></div>
-    <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.npm">{{ links.npm }}</a></div>
-    <div>&nbsp;*&nbsp;Stackoverflow:&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.so">{{ links.so }}</a></div>
-    <div>&nbsp;</div>
-    <div>0&nbsp;packages&nbsp;can&nbsp;be&nbsp;updated.</div>
-    <div>0&nbsp;updates&nbsp;are&nbsp;security&nbsp;updates.</div>
-    <div>&nbsp;</div>
-    <div>&nbsp;</div>
-    <div>***&nbsp;System&nbsp;restart&nbsp;required&nbsp;***</div>
+    <div v-if="!rebooted">
+      <div>&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___</div>
+      <div>/\&nbsp;\&nbsp;&nbsp;__/\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/\_&nbsp;\</div>
+      <div>\&nbsp;\&nbsp;\/\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__\//\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__</div>
+      <div>&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;/'__`\\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;/'___\&nbsp;/&nbsp;__`\&nbsp;/'&nbsp;__`&nbsp;__`\&nbsp;&nbsp;/'__`\</div>
+      <div>&nbsp;&nbsp;\&nbsp;\&nbsp;\_/&nbsp;\_\&nbsp;\/\&nbsp;&nbsp;__/&nbsp;\_\&nbsp;\_/\&nbsp;\__//\&nbsp;\L\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;&nbsp;__/</div>
+      <div>&nbsp;&nbsp;&nbsp;\&nbsp;`\___x___/\&nbsp;\____\/\____\&nbsp;\____\&nbsp;\____/\&nbsp;\_\&nbsp;\_\&nbsp;\_\&nbsp;\____\</div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;'\/__//__/&nbsp;&nbsp;\/____/\/____/\/____/\/___/&nbsp;&nbsp;\/_/\/_/\/_/\/____/</div>
+      <div>&nbsp;</div>
+      <div>Welcome&nbsp;to&nbsp;GrantOS&nbsp;1.0.0&nbsp;LTS&nbsp;({{ userAgent }})</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.gh">{{ links.gh }}</a></div>
+      <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.twitter">{{ links.twitter }}</a></div>
+      <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.npm">{{ links.npm }}</a></div>
+      <div>&nbsp;*&nbsp;Stackoverflow:&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.so">{{ links.so }}</a></div>
+      <div>&nbsp;</div>
+      <div>0&nbsp;packages&nbsp;can&nbsp;be&nbsp;updated.</div>
+      <div>0&nbsp;updates&nbsp;are&nbsp;security&nbsp;updates.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>***&nbsp;System&nbsp;restart&nbsp;required&nbsp;***</div>
+    </div>
+
+    <div v-if="rebooted">
+      <div>&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___</div>
+      <div>/\&nbsp;\&nbsp;&nbsp;__/\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/\_&nbsp;\</div>
+      <div>\&nbsp;\&nbsp;\/\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__\//\&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___&nbsp;___&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__</div>
+      <div>&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;\&nbsp;&nbsp;/'__`\\&nbsp;\&nbsp;\&nbsp;&nbsp;&nbsp;/'___\&nbsp;/&nbsp;__`\&nbsp;/'&nbsp;__`&nbsp;__`\&nbsp;&nbsp;/'__`\</div>
+      <div>&nbsp;&nbsp;\&nbsp;\&nbsp;\_/&nbsp;\_\&nbsp;\/\&nbsp;&nbsp;__/&nbsp;\_\&nbsp;\_/\&nbsp;\__//\&nbsp;\L\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;\/\&nbsp;&nbsp;__/</div>
+      <div>&nbsp;&nbsp;&nbsp;\&nbsp;`\___x___/\&nbsp;\____\/\____\&nbsp;\____\&nbsp;\____/\&nbsp;\_\&nbsp;\_\&nbsp;\_\&nbsp;\____\</div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;'\/__//__/&nbsp;&nbsp;\/____/\/____/\/____/\/___/&nbsp;&nbsp;\/_/\/_/\/_/\/____/</div>
+      <div>&nbsp;</div>
+      <div>Welcome&nbsp;to&nbsp;GrantOS&nbsp;1.0.1&nbsp;LTS&nbsp;({{ userAgent }})</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.gh">{{ links.gh }}</a></div>
+      <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.twitter">{{ links.twitter }}</a></div>
+      <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.npm">{{ links.npm }}</a></div>
+      <div>&nbsp;*&nbsp;Stackoverflow:&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.so">{{ links.so }}</a></div>
+      <div>&nbsp;</div>
+      <div>0&nbsp;packages&nbsp;can&nbsp;be&nbsp;updated.</div>
+      <div>0&nbsp;updates&nbsp;are&nbsp;security&nbsp;updates.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+    </div>
+
     <div v-for="(line, index) in lineFeed" :key="index">
       <span v-if="line.hasPrompt" class="user-prompt">{{ userPrompt }}</span>
       <span v-html="line.text"></span>
@@ -31,6 +56,10 @@
       <span class="user-prompt" :class="{ 'add-buffer': !userInput }">{{ userPrompt }}</span>
       <span>{{ userInput }}</span>
       <span class="cursor" :class="{ blink: !typing }" :style="{ left: `${cursorOffset}px` }">&nbsp;</span>
+    </div>
+
+    <div v-if="preLineFeed.length > 0">
+      {{ preLineFeed }}
     </div>
   </div>
 </template>
@@ -60,10 +89,12 @@ export default {
       userInput: '',
       userPrompt: 'root@grantholle.com:$',
       lineFeed: [],
+      preLineFeed: '',
       typing: false,
       cursorOffset: -8,
       userAgent: window.navigator.userAgent,
       allowInput: false,
+      rebooted: false,
       commands: [
         'help',
         'reboot',
@@ -95,15 +126,19 @@ export default {
         case 'Tab':
           event.preventDefault()
 
-          const command = this.commands.find(c => c.match(new RegExp(`^${this.userInput}`, 'i')))
+          const command = this.commands.filter(c => c.match(new RegExp(`^${this.userInput}`, 'i')))
 
-          if (command) {
+          if (command.length === 1) {
             this.userInput = command + ' '
+          } else if (command.length > 1) {
+            this.preLineFeed = command.join(' ')
           }
 
           this.resume()
           break
         case 'Enter':
+          this.preLineFeed = ''
+
           this.lineFeed.push({
             hasPrompt: true,
             text: this.userInput
