@@ -77,8 +77,7 @@ export default {
       commands: [
         'help',
         'reboot',
-        'hello',
-        'social'
+        'hello'
       ],
       commandHistoryIndex: 1,
       commandHistory: [
