@@ -24,7 +24,7 @@
     <div>***&nbsp;System&nbsp;restart&nbsp;required&nbsp;***</div>
     <div v-for="(line, index) in lineFeed" :key="index">
       <span v-if="line.hasPrompt" class="user-prompt">{{ userPrompt }}</span>
-      {{ line.text }}
+      <span v-html="line.text"></span>
     </div>
 
     <div v-if="allowInput" class="user-input">
@@ -38,6 +38,7 @@
 <script>
 import moment from 'moment'
 import axios from 'axios'
+import sanitize from 'sanitize-html'
 
 export default {
   name: 'Cli',
@@ -153,9 +154,14 @@ export default {
       }
     },
     runCommand () {
-      const parts = this.userInput.split(' ')
+      const clean = sanitize(this.userInput, {
+        allowedTags: [],
+        allowedAttributes: []
+      }).trim()
+
+      const parts = clean.split(' ')
       const command = parts[0] === 'sudo' ? parts[1] : parts[0]
-      this.commandHistory.push(this.userInput)
+      this.commandHistory.push(clean)
       this.commandHistoryIndex = this.commandHistory.length
       this.userInput = ''
 
