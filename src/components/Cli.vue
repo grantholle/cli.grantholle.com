@@ -186,6 +186,7 @@ export default {
           text: `${command}: command not found`
         })
         this.cursorOffset = -8
+        this.resume()
         return this.scroll()
       }
 
