@@ -233,6 +233,7 @@ body {
     border: none;
     outline: none;
     user-select: none;
+    width: 1px;
   }
 
   a {
