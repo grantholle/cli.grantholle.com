@@ -169,10 +169,11 @@ export default {
         this.lineFeed.push({
           text: `${command}: command not found`
         })
+        this.cursorOffset = -8
         return this.scroll()
       }
 
-      this[command]()
+      this[command](parts)
     },
     scroll () {
       window.scrollTo(0, document.body.scrollHeight)
@@ -187,10 +188,12 @@ export default {
       setTimeout(() => this.typing = false, 150)
     },
     // All the command functions
-    hello () {
+    hello (args) {
       this.lineFeed.push({
         text: `你好！`
       })
+
+      this.resume()
     }
   }
 }
