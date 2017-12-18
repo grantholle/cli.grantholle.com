@@ -233,9 +233,9 @@ export default {
       setTimeout(() => {
         this.lineFeed = []
         this.clearScreen = true
+        this.rebooted = true
 
         setTimeout(() => {
-          this.rebooted = true
           this.clearScreen = false
 
           this.getIp()
