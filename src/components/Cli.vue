@@ -87,8 +87,8 @@ export default {
   },
   methods: {
     async getIp () {
-      // const { data } = await axios.get(`https://api.ipify.org?format=json`)
-      const data = { ip: '192.168.1.1' }
+      const { data } = await axios.get(`https://api.ipify.org?format=json`)
+      // const data = { ip: '192.168.1.1' }
 
       this.lineFeed.push({
         text: `Current Login: ${moment().format('ddd MMM DD HH:mm:ss YYYY')} from ${data.ip}`
