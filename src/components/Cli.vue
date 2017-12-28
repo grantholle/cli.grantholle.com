@@ -194,6 +194,7 @@ export default {
       }
 
       this[command](parts)
+      window.ga('send', 'event', 'Commands', 'run', command)
     },
     scroll () {
       Vue.nextTick(() => window.scrollTo(0, document.body.scrollHeight))
