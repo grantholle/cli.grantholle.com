@@ -27,7 +27,7 @@
 
     <div v-for="(line, index) in lineFeed" :key="index">
       <span v-if="line.hasPrompt" class="user-prompt">{{ userPrompt }}</span>
-      <span v-html="line.text"></span>
+      <span v-html="line.text" class="output-text"></span>
     </div>
 
     <div v-if="allowInput" class="user-input">
@@ -46,6 +46,7 @@
 import moment from 'moment'
 import axios from 'axios'
 import sanitize from 'sanitize-html'
+import Vue from 'vue'
 
 export default {
   name: 'Cli',
@@ -77,7 +78,9 @@ export default {
       commands: [
         'help',
         'reboot',
-        'hello'
+        'hello',
+        'about',
+        'skills'
       ],
       commandHistoryIndex: 1,
       commandHistory: [
@@ -97,7 +100,7 @@ export default {
       setTimeout(() => this.allowInput = true, 750)
     },
     handleInput (event) {
-      console.log(event.key)
+      // console.log(event.key)
       if (!this.typing) {
         this.typing = true
       }
@@ -181,7 +184,7 @@ export default {
       this.commandHistoryIndex = this.commandHistory.length
       this.userInput = ''
 
-      if (this.commands.indexOf(command) === -1) {
+      if (this.commands.indexOf(command) === -1 && typeof this[command] !== 'function') {
         this.lineFeed.push({
           text: `${command}: command not found`
         })
@@ -193,7 +196,7 @@ export default {
       this[command](parts)
     },
     scroll () {
-      window.scrollTo(0, document.body.scrollHeight)
+      Vue.nextTick(() => window.scrollTo(0, document.body.scrollHeight))
     },
     handleClick (event) {
       this.$el.children[0].focus()
@@ -245,6 +248,51 @@ export default {
           }, 750)
         }, 2000)
       }, 2000)
+    },
+    about (args) {
+      this.lineFeed.push({
+        text: `<br>
+          Grant was born in Iowa, raised in Missouri, and is currently living in China.
+          He loves all things web and is currently an application developer for an
+          international school in Tianjin. He spends his free time doing something
+          like what you're looking at now, contributing to some open source projects and
+          hanging out with his family.
+        <br><br>`
+      })
+
+      this.resume()
+    },
+    secret (args) {
+      this.lineFeed.push({ text: 'ssshhhhhh!' })
+    },
+    skills (args) {
+      const lineTotal = Math.floor(document.body.clientWidth / 8) - 4
+      const skills = [
+        { label: 'HTML', value: .95 },
+        { label: 'CSS', value: .92 },
+        { label: 'JavaScript + Node.js', value: .88 },
+        { label: 'Python', value: .30 },
+        { label: 'Ruby', value: .25 },
+        { label: 'PHP', value: .85 },
+        { label: 'C#', value: .55 },
+        { label: 'Java', value: .35 },
+        { label: 'Swift', value: .05 },
+      ]
+
+      skills.forEach(s => {
+        const total = Math.floor(s.value * lineTotal)
+        const spaces = lineTotal - total
+
+        this.lineFeed.push({
+          text: s.label
+        }, {
+          text: `[${'#'.repeat(total)}${'&nbsp;'.repeat(spaces)}]<br><br>`
+        })
+
+        this.scroll()
+      })
+
+      this.resume()
     }
   }
 }
@@ -378,6 +426,12 @@ body {
   width: 100%;
   font-family: 'Inconsolata', monospace;
   position: relative;
+
+  .output-text {
+    a {
+      text-decoration: underline;
+    }
+  }
 
   div {
     line-height: 1.3em;
