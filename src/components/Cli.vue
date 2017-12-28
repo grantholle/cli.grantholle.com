@@ -184,6 +184,9 @@ export default {
       this.commandHistoryIndex = this.commandHistory.length
       this.userInput = ''
 
+      // Register GA event
+      window.ga('send', 'event', 'Commands', 'run', command)
+
       if (this.commands.indexOf(command) === -1 && typeof this[command] !== 'function') {
         this.lineFeed.push({
           text: `${command}: command not found`
@@ -194,7 +197,6 @@ export default {
       }
 
       this[command](parts)
-      window.ga('send', 'event', 'Commands', 'run', command)
     },
     scroll () {
       Vue.nextTick(() => window.scrollTo(0, document.body.scrollHeight))
