@@ -83,7 +83,8 @@ export default {
         'hello',
         'about',
         'skills',
-        'joke'
+        'joke',
+        'now'
       ],
       commandHistoryIndex: 1,
       commandHistory: [
@@ -226,7 +227,7 @@ export default {
     },
     hello (args) {
       this.lineFeed.push({
-        text: `你好！`
+        text: `你好！我是Grant，很高兴认识你。`
       })
 
       this.resume()
@@ -314,6 +315,13 @@ export default {
       })
 
       this.allowInput = true
+      this.scroll()
+      this.resume()
+    },
+    now (args) {
+      this.lineFeed.push({
+        text: moment().format('h:mm:ssa, MMMM Do, YYYY')
+      })
       this.scroll()
       this.resume()
     }
