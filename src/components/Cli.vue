@@ -13,10 +13,11 @@
       <div>&nbsp;</div>
       <div>Welcome&nbsp;to&nbsp;GrantOS&nbsp;1.0.0&nbsp;LTS&nbsp;({{ userAgent }})</div>
       <div>&nbsp;</div>
-      <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.gh">{{ links.gh }}</a></div>
-      <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.twitter">{{ links.twitter }}</a></div>
-      <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.npm">{{ links.npm }}</a></div>
-      <div>&nbsp;*&nbsp;Stackoverflow:&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.so">{{ links.so }}</a></div>
+      <div>&nbsp;*&nbsp;Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.gh">{{ links.gh }}</a></div>
+      <div>&nbsp;*&nbsp;Twitter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.twitter">{{ links.twitter }}</a></div>
+      <div>&nbsp;*&nbsp;npm:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.npm">{{ links.npm }}</a></div>
+      <div>&nbsp;*&nbsp;Stack Overflow:&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.so">{{ links.so }}</a></div>
+      <div>&nbsp;*&nbsp;Blog:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" :href="links.blog">{{ links.blog }}</a></div>
       <div>&nbsp;</div>
       <div>0&nbsp;packages&nbsp;can&nbsp;be&nbsp;updated.</div>
       <div>0&nbsp;updates&nbsp;are&nbsp;security&nbsp;updates.</div>
@@ -63,7 +64,8 @@ export default {
         so: 'https://stackoverflow.com/users/1696102/grant',
         npm: 'https://www.npmjs.com/~grantholle',
         gh: 'https://github.com/grantholle',
-        twitter: 'https://twitter.com/grantholle_'
+        twitter: 'https://twitter.com/grantholle_',
+        blog: 'http://grantholle.com/words/'
       },
       userInput: '',
       userPrompt: 'guest@grantholle.com:$',
@@ -259,7 +261,8 @@ export default {
           He loves all things web and is currently an application developer for an
           international school in Tianjin. He spends his free time doing something
           like what you're looking at now, contributing to some open source projects and
-          hanging out with his family.
+          hanging out with his family.<br><br>
+          You can also read his <a href="/words/" target="_blank">words</a>.
         <br><br>`
       })
 
