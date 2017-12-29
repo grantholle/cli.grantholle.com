@@ -82,7 +82,8 @@ export default {
         'reboot',
         'hello',
         'about',
-        'skills'
+        'skills',
+        'joke'
       ],
       commandHistoryIndex: 1,
       commandHistory: [
@@ -298,6 +299,22 @@ export default {
         this.scroll()
       })
 
+      this.resume()
+    },
+    async joke (args) {
+      this.allowInput = false
+      const { data } = await axios.get(`https://icanhazdadjoke.com/`, {
+        headers: {
+          Accept: 'application/json'
+        }
+      })
+
+      this.lineFeed.push({
+        text: data.joke
+      })
+
+      this.allowInput = true
+      this.scroll()
       this.resume()
     }
   }
