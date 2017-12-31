@@ -1,6 +1,6 @@
 <template>
-  <div class="cli" @keydown="handleInput" @click="handleClick">
-    <input type="text" v-model="userInput" @blur="blur" autofocus spellcheck="false">
+  <div class="cli" :class="{ shake: showWill }" @keydown="handleInput" @click="handleClick">
+    <input type="text" id="userInput" v-model="userInput" @blur="blur" autofocus spellcheck="false">
 
     <div v-if="!clearScreen">
       <div :class="{ rainbow: rebooted }">&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___</div>
@@ -77,6 +77,7 @@ export default {
       allowInput: false,
       rebooted: false,
       clearScreen: false,
+      showWill: false,
       commands: [
         'help',
         'reboot',
@@ -171,7 +172,7 @@ export default {
           break
         default:
           this.resume()
-          this.handleClick()
+          // this.handleClick()
           this.cursorOffset = this.cursorOffset < -8 ? this.cursorOffset : -8
           break
       }
@@ -203,10 +204,12 @@ export default {
       this[command](parts)
     },
     scroll () {
-      Vue.nextTick(() => window.scrollTo(0, document.body.scrollHeight))
+      const cliDiv = document.querySelector('div.cli')
+
+      Vue.nextTick(() => cliDiv.scrollTop = cliDiv.scrollHeight)
     },
     handleClick (event) {
-      this.$el.children[0].focus()
+      Vue.nextTick(() => document.getElementById('userInput').focus())
     },
     blur (event) {
       event.target.focus()
@@ -271,7 +274,9 @@ export default {
       this.resume()
     },
     secret (args) {
-      this.lineFeed.push({ text: 'ssshhhhhh!' })
+      this.lineFeed.push({
+        text: 'SSSHHHHHH! `bigwilly` is afoot'
+      })
     },
     skills (args) {
       const lineTotal = Math.floor(document.body.clientWidth / 8) - 4
@@ -324,6 +329,24 @@ export default {
       })
       this.scroll()
       this.resume()
+    },
+    bigwilly (args) {
+      if (args[0].toLowerCase() !== 'sudo') {
+        return this.lineFeed.push({
+          text: `bigwilly: Permission denied.`
+        })
+      }
+
+      this.lineFeed.push({
+        text: `Gettin jiggy wit it...`
+      })
+
+      this.showWill = true
+      this.allowInput = false
+
+      setTimeout(() => {
+        this.$router.push({ name: 'BigWilly' })
+      }, 3000)
     }
   }
 }
@@ -447,16 +470,48 @@ $black: #002833;
   100% { color: #F67825; }
 }
 
+@keyframes shake {
+  0% { transform: translateX(0) }
+  10% { transform: translateX(5px) }
+  20% { transform: translateX(-5px) }
+  30% { transform: translateX(10px) }
+  40% { transform: translateX(-10px) }
+  50% { transform: translateX(20px) }
+  60% { transform: translateX(-20px) }
+  70% { transform: translateX(30px) }
+  80% { transform: translateX(-30px) }
+  90% { transform: translateX(40px) }
+  100% { transform: rotate(45deg) translate(100%, 100%) }
+}
+
+html {
+  height: 100%;
+  background: #fff;
+}
+
 body {
-  background: $black;
-  color: $white;
-  padding: 8px 10px;
+  background: #fff;
+  height: 100%;
+
+}
+
+#app {
+  height: 100%;
+}
+
+.shake {
+  animation: shake 2s ease 1s forwards;
 }
 
 .cli {
   width: 100%;
+  height: 100%;
+  background: $black;
+  color: $white;
   font-family: 'Inconsolata', monospace;
   position: relative;
+  padding: 8px 10px;
+  overflow-y: scroll;
 
   .output-text {
     a {
