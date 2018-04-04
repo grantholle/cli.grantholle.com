@@ -53,6 +53,7 @@ export default {
   name: 'Cli',
   created () {
     this.getIp()
+    console.log(`Hello there curious soul. There is a 'secret' around somewhere...`)
   },
   ready () {
     this.$el.children[0].focus()
