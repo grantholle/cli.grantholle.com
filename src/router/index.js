@@ -1,11 +1,9 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Cli from '@/components/Cli'
-import BigWilly from '@/components/BigWilly'
+import { createRouter, createWebHistory } from 'vue-router'
+import Cli from '@/components/Cli.vue'
+import BigWilly from '@/components/BigWilly.vue'
 
-Vue.use(Router)
-
-export default new Router({
+export default createRouter({
+  history: createWebHistory(),
   routes: [
     {
       path: '/',

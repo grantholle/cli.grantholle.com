@@ -32,7 +32,7 @@
     </div>
 
     <div v-if="allowInput" class="user-input">
-      <span class="user-prompt" :class="{ 'add-buffer': !userInput }">{{ userPrompt }}</span>
+      <span class="user-prompt">{{ userPrompt }}</span>
       <span>{{ userInput }}</span>
       <span class="cursor" :class="{ blink: !typing }" :style="{ left: `${cursorOffset}px` }">&nbsp;</span>
     </div>
@@ -44,10 +44,13 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
 import axios from 'axios'
 import sanitize from 'sanitize-html'
-import Vue from 'vue'
+import { nextTick } from 'vue'
+
+dayjs.extend(advancedFormat)
 
 export default {
   name: 'Cli',
@@ -55,8 +58,9 @@ export default {
     this.getIp()
     console.log(`Hello there curious soul. There is a 'secret' around somewhere...`)
   },
-  ready () {
-    this.$el.children[0].focus()
+  mounted () {
+    this.focusInput()
+    setInterval(() => this.focusInput(), 1000)
   },
   data () {
     return {
@@ -73,7 +77,7 @@ export default {
       lineFeed: [],
       preLineFeed: '',
       typing: false,
-      cursorOffset: -8,
+      cursorOffset: 0,
       userAgent: window.navigator.userAgent,
       allowInput: false,
       rebooted: false,
@@ -84,7 +88,6 @@ export default {
         'reboot',
         'hello',
         'about',
-        'skills',
         'joke',
         'now'
       ],
@@ -100,7 +103,7 @@ export default {
       // const data = { ip: '192.168.1.1' }
 
       this.lineFeed.push({
-        text: `Current Login: ${moment().format('ddd MMM DD HH:mm:ss YYYY')} from ${data.ip}`
+        text: `Current Login: ${dayjs().format('ddd MMM DD HH:mm:ss YYYY')} from ${data.ip}`
       })
 
       setTimeout(() => this.allowInput = true, 750)
@@ -136,10 +139,6 @@ export default {
           this.scroll()
           this.runCommand()
           break
-        case ' ':
-          this.cursorOffset += 8
-          this.resume()
-          break
         case 'Shift':
         case 'Backspace':
         case 'Control':
@@ -148,14 +147,14 @@ export default {
           this.resume()
           break
         case 'ArrowLeft':
-          if (this.cursorOffset > this.userInput.length * -8 - 8) {
-            this.cursorOffset += -8
+          if (this.cursorOffset > this.userInput.length * -8) {
+            this.cursorOffset -= 8
           }
 
           this.resume()
           break
         case 'ArrowRight':
-          if (this.cursorOffset < -8) {
+          if (this.cursorOffset < 0) {
             this.cursorOffset += 8
           }
 
@@ -174,7 +173,7 @@ export default {
         default:
           this.resume()
           // this.handleClick()
-          this.cursorOffset = this.cursorOffset < -8 ? this.cursorOffset : -8
+          this.cursorOffset = this.cursorOffset < 0 ? this.cursorOffset : 0
           break
       }
     },
@@ -197,7 +196,7 @@ export default {
         this.lineFeed.push({
           text: `${command}: command not found`
         })
-        this.cursorOffset = -8
+        this.cursorOffset = 0
         this.resume()
         return this.scroll()
       }
@@ -207,10 +206,13 @@ export default {
     scroll () {
       const cliDiv = document.querySelector('div.cli')
 
-      Vue.nextTick(() => cliDiv.scrollTop = cliDiv.scrollHeight)
+      nextTick(() => cliDiv.scrollTop = cliDiv.scrollHeight)
+    },
+    focusInput () {
+      document.getElementById('userInput')?.focus()
     },
     handleClick (event) {
-      Vue.nextTick(() => document.getElementById('userInput').focus())
+      this.focusInput()
     },
     blur (event) {
       event.target.focus()
@@ -268,7 +270,6 @@ export default {
           international school in Tianjin. He spends his free time doing something
           like what you're looking at now, contributing to some open source projects and
           hanging out with his family.<br><br>
-          You can also read his <a href="/words/" target="_blank">words</a>.
         <br><br>`
       })
 
@@ -326,7 +327,7 @@ export default {
     },
     now (args) {
       this.lineFeed.push({
-        text: moment().format('h:mm:ssa, MMMM Do, YYYY')
+        text: dayjs().format('h:mm:ssa, MMMM Do, YYYY')
       })
       this.scroll()
       this.resume()
@@ -562,11 +563,7 @@ body {
 }
 
 .user-prompt {
-  color: #93a1a1
-}
-
-.add-buffer {
-  display: inline-block;
+  color: #93a1a1;
   margin-right: 6px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="bigwilly">
-    <img v-for="(will, pIndex) in wills" :key="`will-${pIndex}`" :style="will" src="/static/will.png" class="scale-spin will" alt="Will Smith">
+    <img v-for="(will, pIndex) in wills" :key="`will-${pIndex}`" :style="will" src="/will.png" class="scale-spin will" alt="Will Smith">
     <div v-for="(circle, index) in circles" :key="index" :style="{ background: circle }" class="circle"></div>
   </div>
 </template>
