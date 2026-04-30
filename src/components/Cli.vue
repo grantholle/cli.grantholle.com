@@ -1,6 +1,6 @@
 <template>
-  <div class="cli" :class="{ shake: showWill }" @keydown="handleInput" @click="handleClick">
-    <input type="text" id="userInput" v-model="userInput" @blur="blur" autofocus spellcheck="false">
+  <div class="cli" :class="{ shake: showWill }" @click="handleClick">
+    <input type="text" id="userInput" v-model="userInput" @keydown="handleInput" @keyup="handleKeyup" @blur="blur" autofocus spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="none">
 
     <div v-if="!clearScreen">
       <div :class="{ rainbow: rebooted }">&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___</div>
@@ -128,17 +128,6 @@ export default {
 
           this.resume()
           break
-        case 'Enter':
-          this.preLineFeed = ''
-
-          this.lineFeed.push({
-            hasPrompt: true,
-            text: this.userInput
-          })
-
-          this.scroll()
-          this.runCommand()
-          break
         case 'Shift':
         case 'Backspace':
         case 'Control':
@@ -175,6 +164,15 @@ export default {
           // this.handleClick()
           this.cursorOffset = this.cursorOffset < 0 ? this.cursorOffset : 0
           break
+      }
+    },
+    handleKeyup (event) {
+      // Fallback for mobile keyboards that fire keyup but not keydown for Enter
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        this.preLineFeed = ''
+        this.lineFeed.push({ hasPrompt: true, text: this.userInput })
+        this.scroll()
+        this.runCommand()
       }
     },
     runCommand () {
@@ -527,13 +525,16 @@ body {
 
   input {
     position: absolute;
-    bottom: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     color: transparent;
+    caret-color: transparent;
     background: transparent;
     border: none;
     outline: none;
-    user-select: none;
-    width: 1px;
+    pointer-events: none;
   }
 
   a {
